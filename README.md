@@ -71,5 +71,20 @@ load a template,
 fill a context and 
 return an HttpResponse object with the result of the rendered template
 
+## testing
+1. test your code in shell
+2. write automated tests and run 
+
+python manage.py test polls
+
+manage.py test polls looked for tests in the polls application
+
+- it found a subclass of the django.test.TestCase class
+
+- it created a special database for the purpose of testing
+
+- it looked for test methods - ones whose names begin with test
+
+
 
 # polls-app-django
