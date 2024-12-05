@@ -1,0 +1,38 @@
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+<fieldset>
+    <legend><h1>{{ question.question_text }}</h1></legend>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% for choice in question.choice_set.all %}
+        <input 
+            type="radio" 
+            name="choice" 
+            id="choice{{ forloop.counter }}" 
+            value="{{ choice.id }}"
+        >
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% endfor %}
+</fieldset>
+<input type="submit" value="Vote">
+</form>
+    
+
+{% comment %} 
+When you define a ForeignKey in the Choice model:
+question = models.ForeignKey(Question, on_delete=models.CASCADE)
+Django creates a reverse relation from the Question model to the Choice model. 
+By default, Django names this reverse relation as modelname_set 
+(in this case, choice_set).
+q = Question.objects.get(pk=1)
+q.choice_set.create(choice_text="Not much", votes=0)
+q.choice_set.create(choice_text="The sky", votes=0)
+
+modelname_set.all() retrieves all instances of the related model 
+that have a ForeignKey pointing to the current instance of the parent model.
+{% endcomment %}
+
+{% comment %} 
+Cross Site Request Forgeries:
+all POST forms that are targeted at internal URLs 
+should use the {% csrf_token %} template tag.
+{% endcomment %}
